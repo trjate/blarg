@@ -10,6 +10,10 @@ class PostsController < ApplicationController
     render :show
   end
 
+  def new
+    render :new
+  end
+
   protected
   def get_page(n)
     page_offset = (n - 1) * 10
