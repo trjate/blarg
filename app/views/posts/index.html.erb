@@ -1,10 +1,5 @@
 <div class="posts">
   <% @posts.each do |post| %>
-  <div class="post">
-    <h3><%= post.title %></h3>
-    <h4>Written on: <%= post.written_at %></h4>
-
-    <%= simple_format(post.content) %>
-  </div>
+    <%= render partial: "post", object: post %>
   <% end %>
 </div>
