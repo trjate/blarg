@@ -25,6 +25,22 @@ class PostsController < ApplicationController
     # redirect_to post_path(@post)
   end
 
+  def edit
+    @post = Post.find(params[:id])
+    @tags = @post.tags.map(&:name).join(", ")
+    # @tags = @post.tags.map { |x| x.name }
+    render :edit
+  end
+
+  def update
+  end
+
+  def delete
+    @post = Post.find(params[:id])
+    @post.destroy
+    redirect_to posts_path
+  end
+
   protected
   def get_page(n)
     page_offset = (n - 1) * 10
