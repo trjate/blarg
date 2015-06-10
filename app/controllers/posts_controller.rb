@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  
   def index
     page = params[:page] || 1
     @posts = self.get_page(page)
@@ -12,6 +13,11 @@ class PostsController < ApplicationController
 
   def new
     render :new
+  end
+
+  def edit
+    @post = Post.find(params[:id])
+    render :show
   end
 
   def create
@@ -31,3 +37,5 @@ class PostsController < ApplicationController
     Post.order(written_at: :desc).offset(page_offset).limit(10)
   end
 end
+
+# binding.pry
