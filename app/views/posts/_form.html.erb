@@ -1,20 +1,19 @@
 <%= form_tag(@action, method: @http_verb, class: 'post-form') do %>
-  <div class="post-input">
+  <div class="form-group">
     <%= label_tag(:title, "Title: ") %>
     <%= text_field_tag(:title, @post.title, size: 40) %>
   </div>
 
-  <div class="post-input">
+  <div class="form-group">
     <%= label_tag(:tags, "Tags: ") %>
     <%= text_field_tag(:tags, @tags, size: 40) %>
   </div> 
 
-  <div class="post-input">
+  <div class="form-group">
     <%= label_tag(:content, "Content: ") %>
     <br/>
     <%= text_area_tag(:content, @post.content, rows: 40, cols: 80) %>
   </div>
 
-  <br/>
-  <div><%= submit_tag 'Save' %></div>
+  <div><%= submit_tag 'Save', class: 'btn btn-default' %></div>
 <% end %>
