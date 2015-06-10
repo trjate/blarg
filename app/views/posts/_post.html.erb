@@ -4,3 +4,7 @@
 
   <%= simple_format(post.content) %>
 </div>
+
+<div class="post-nav">
+  <%= link_to "Edit Post", post_edit_path(post) %>
+</div>

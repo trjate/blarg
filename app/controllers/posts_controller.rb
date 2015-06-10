@@ -11,6 +11,9 @@ class PostsController < ApplicationController
   end
 
   def new
+    @post = Post.new
+    @action = posts_path
+    @http_verb = :post
     render :new
   end
 
@@ -28,7 +31,9 @@ class PostsController < ApplicationController
   def edit
     @post = Post.find(params[:id])
     @tags = @post.tags.map(&:name).join(", ")
-    # @tags = @post.tags.map { |x| x.name }
+    # @tags = @post.tags.map { |x| x.name }.join(", ")
+    @action = post_path(@post)
+    @http_verb = :patch
     render :edit
   end
 

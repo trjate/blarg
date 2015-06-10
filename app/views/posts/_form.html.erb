@@ -1,4 +1,4 @@
-<%= form_tag('/posts', class: 'post-form') do %>
+<%= form_tag(@action, method: @http_verb, class: 'post-form') do %>
   <div class="post-input">
     <%= label_tag(:title, "Title: ") %>
     <%= text_field_tag(:title, @post.title, size: 40) %>
