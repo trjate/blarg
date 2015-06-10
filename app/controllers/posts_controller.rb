@@ -38,6 +38,13 @@ class PostsController < ApplicationController
   end
 
   def update
+    tags = params[:tags].split(", ")
+    tag_models = tags.map { |tag| Tag.find_or_create_by(name: tag) }
+    @post = Post.find(params[:id])
+    @post.update(title: params[:title],
+                 content: params[:content],
+                 tags: tag_models)
+    redirect_to post_path(@post)
   end
 
   def delete
