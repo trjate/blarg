@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!, only: [:create, :update, :delete]
+
   def index
     page = params[:page] || 1
     @posts = self.get_page(page)
