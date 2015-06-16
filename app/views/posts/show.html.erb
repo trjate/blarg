@@ -10,5 +10,11 @@
 </div>
 
 <div class="comments">
-  <%= render partial: "comments/form", locals: { post: @post } %>
+  <% if current_user %>
+    <%= render partial: "comments/form", locals: { post: @post } %>
+  <% end %>
+
+  <% @post.comments.each do |c| %>
+    <%= render partial: "comments/comment", locals: { comment: c } %>
+  <% end %>
 </div>
