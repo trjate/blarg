@@ -8,3 +8,13 @@
         data: { confirm: "Are you sure you want to delete this beautiful piece of writing?"} %>
   <% end %>
 </div>
+
+<div class="comments">
+  <% if current_user %>
+    <%= render partial: "comments/form", locals: { post: @post } %>
+  <% end %>
+
+  <% @post.comments.each do |c| %>
+    <%= render partial: "comments/comment", locals: { comment: c } %>
+  <% end %>
+</div>
