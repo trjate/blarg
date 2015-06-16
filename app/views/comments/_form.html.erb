@@ -1,0 +1,11 @@
+<div class="comment-form">
+  <%= form_tag(comments_path) do %>  
+    <div class="form-group">
+      <%= label_tag(:body, "Comment: ") %>
+      <br/>
+      <%= text_area_tag(:body, nil, rows: 40, cols: 40) %>
+    </div>
+
+    <%= submit_tag 'Add Comment', class: 'btn btn-info' %>
+  <% end %>
+</div>
