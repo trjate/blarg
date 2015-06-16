@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -7,6 +8,8 @@ Rails.application.routes.draw do
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
+
+  root to: 'posts#index'
 
   get 'post/:id', to: 'posts#show', as: 'post'
   get 'post/:id/edit', to: 'posts#edit', as: 'post_edit'

@@ -1,4 +1,6 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!, only: [:create, :update, :delete]
+
   def index
     page = params[:page] || 1
     @posts = self.get_page(page)
@@ -20,10 +22,10 @@ class PostsController < ApplicationController
   def create
     tags = params[:tags].split(", ")
     tag_models = tags.map { |tag| Tag.find_or_create_by(name: tag) }
-    @post = Post.create(title: params[:title],
-                        content: params[:content],
-                        written_at: DateTime.now,
-                        tags: tag_models)
+    @post = current_user.posts.create(title: params[:title],
+                                      content: params[:content],
+                                      written_at: DateTime.now,
+                                      tags: tag_models)
     redirect_to posts_path
     # redirect_to post_path(@post)
   end
@@ -38,18 +40,26 @@ class PostsController < ApplicationController
   end
 
   def update
-    tags = params[:tags].split(", ")
-    tag_models = tags.map { |tag| Tag.find_or_create_by(name: tag) }
     @post = Post.find(params[:id])
-    @post.update(title: params[:title],
-                 content: params[:content],
-                 tags: tag_models)
+    if @post.user == current_user
+      tags = params[:tags].split(", ")
+      tag_models = tags.map { |tag| Tag.find_or_create_by(name: tag) }
+      @post.update(title: params[:title],
+                   content: params[:content],
+                   tags: tag_models)
+    else
+      flash[:alert] = 'Only the author of a post may change the post.'
+    end
     redirect_to post_path(@post)
   end
 
   def delete
     @post = Post.find(params[:id])
-    @post.destroy
+    if @post.user == current_user
+      @post.destroy
+    else
+      flash[:alert] = 'Only the author of a post may delete a post.'
+    end
     redirect_to posts_path
   end
 
