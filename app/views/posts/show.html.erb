@@ -1,7 +1,7 @@
 <%= render partial: "post", object: @post %>
 
 <div class="post-nav">
-  <% if current_user %>
+  <% if @post.user == current_user %>
     <%= link_to "Edit Post", post_edit_path(@post), class: 'btn btn-info' %>
     <%= link_to "Delete Post", post_path(@post), class: 'btn btn-danger',
         method: :delete,
