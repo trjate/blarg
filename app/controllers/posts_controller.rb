@@ -3,8 +3,20 @@ class PostsController < ApplicationController
 
   def index
     page = params[:page] || 1
-    @posts = self.get_page(page)
+    @posts = Post.order(written_at: :desc).page(page).per(5)
     render :index
+  end
+
+  def tagged
+    @tag = Tag.find_by(name: params[:name])
+    page = params[:page] || 1
+    if @tag
+      @posts = @tag.posts.order(written_at: :desc).page(page).per(5)
+      render :tagged
+    else
+      flash[:notice] = "No posts tagged with #{params[:name]}."
+      redirect_to :root
+    end
   end
 
   def show
@@ -61,11 +73,5 @@ class PostsController < ApplicationController
       flash[:alert] = 'Only the author of a post may delete a post.'
     end
     redirect_to posts_path
-  end
-
-  protected
-  def get_page(n)
-    page_offset = (n - 1) * 10
-    Post.order(written_at: :desc).offset(page_offset).limit(10)
   end
 end
