@@ -1,5 +1,5 @@
 <div class="comment-form">
-  <%= form_tag(comments_path) do %>  
+  <%= form_tag(post_comments_path(@post)) do %>  
     <div class="form-group">
       <%= label_tag(:body, "Comment: ") %>
       <br/>
