@@ -7,18 +7,6 @@ class PostsController < ApplicationController
     render :index
   end
 
-  def tagged
-    @tag = Tag.find_by(name: params[:name])
-    page = params[:page] || 1
-    if @tag
-      @posts = @tag.posts.order(written_at: :desc).page(page).per(5)
-      render :tagged
-    else
-      flash[:notice] = "No posts tagged with #{params[:name]}."
-      redirect_to :root
-    end
-  end
-
   def show
     @post = Post.find(params[:id])
     render :show
