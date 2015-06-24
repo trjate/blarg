@@ -19,6 +19,11 @@ class PostsController < ApplicationController
     render :new
   end
 
+  def edit
+    @post = Post.find(params[:id])
+    render :show
+  end
+
   def create
     tags = params[:tags].split(", ")
     tag_models = tags.map { |tag| Tag.find_or_create_by(name: tag) }
@@ -63,3 +68,5 @@ class PostsController < ApplicationController
     redirect_to posts_path
   end
 end
+
+# binding.pry
