@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  content: MyText
+fixtures_are_cool:
+  content: fixtures fixtures fixtures 
   title: MyString
   written_at: 2015-06-08 10:49:13
 
-two:
-  content: MyText
+testing_is_cool:
+  content: tests! tests! tests!
   title: MyString
   written_at: 2015-06-08 10:49:13
