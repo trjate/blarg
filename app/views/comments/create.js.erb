@@ -1,0 +1,8 @@
+<% # binding.pry %>
+<% # We need to find the comments div and add the html for the new comment %>
+
+<% new_comment = render partial: "comment", locals: { comment: @comment } %>
+$(".comments").append("<%= escape_javascript(new_comment) %>")
+
+<% # We could clear out the form like this: $("#body").val('') %>
+$(".comment-form").replaceWith("<%= j(render partial: "form") %>")

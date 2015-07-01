@@ -3,8 +3,12 @@ class CommentsController < ApplicationController
 
   def create
     @post = Post.find(params[:post_id])
-    @post.comments.create(user_id: current_user.id,
-                          body: params[:body])
-    redirect_to post_path(@post)
+    @comment = @post.comments.create(user_id: current_user.id,
+                                     body: params[:body])
+
+    respond_to do |format|
+      format.html { redirect_to post_path(@post) }
+      format.js { render :create }
+    end
   end
 end
