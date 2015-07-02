@@ -18,10 +18,8 @@ class PostsController < ApplicationController
   end
 
   def create
-    @post = current_user.posts.create(title: params[:title],
-                                      content: params[:content],
-                                      written_at: DateTime.now,
-                                      tag_names: params[:tag_names])
+    params = post_params.merge({written_at: DateTime.now})
+    @post = current_user.posts.create(params)
     redirect_to posts_path
     # redirect_to post_path(@post)
   end
@@ -34,9 +32,7 @@ class PostsController < ApplicationController
   def update
     @post = Post.find(params[:id])
     if @post.user == current_user
-      @post.update(title: params[:title],
-                   content: params[:content],
-                   tag_names: params[:tag_names])
+      @post.update(post_params)
     else
       flash[:alert] = 'Only the author of a post may change the post.'
     end
@@ -51,5 +47,14 @@ class PostsController < ApplicationController
       flash[:alert] = 'Only the author of a post may delete a post.'
     end
     redirect_to posts_path
+  end
+
+  private
+  def post_params
+    params.require(:post).permit(:title, :tag_names, :content)
+  end
+
+  def invalid_param?
+    params[:post].count > post_params.count
   end
 end
