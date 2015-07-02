@@ -9,44 +9,35 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
+    @comment = Comment.new
     render :show
   end
 
   def new
     @post = Post.new
-    @action = posts_path
-    @http_verb = :post
     render :new
   end
 
   def create
-    tags = params[:tags].split(", ")
-    tag_models = tags.map { |tag| Tag.find_or_create_by(name: tag) }
     @post = current_user.posts.create(title: params[:title],
                                       content: params[:content],
                                       written_at: DateTime.now,
-                                      tags: tag_models)
+                                      tag_names: params[:tag_names])
     redirect_to posts_path
     # redirect_to post_path(@post)
   end
 
   def edit
     @post = Post.find(params[:id])
-    @tags = @post.tags.map(&:name).join(", ")
-    # @tags = @post.tags.map { |x| x.name }.join(", ")
-    @action = post_path(@post)
-    @http_verb = :patch
     render :edit
   end
 
   def update
     @post = Post.find(params[:id])
     if @post.user == current_user
-      tags = params[:tags].split(", ")
-      tag_models = tags.map { |tag| Tag.find_or_create_by(name: tag) }
       @post.update(title: params[:title],
                    content: params[:content],
-                   tags: tag_models)
+                   tag_names: params[:tag_names])
     else
       flash[:alert] = 'Only the author of a post may change the post.'
     end
