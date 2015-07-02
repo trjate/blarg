@@ -14,39 +14,25 @@ class PostsController < ApplicationController
 
   def new
     @post = Post.new
-    @action = posts_path
-    @http_verb = :post
     render :new
   end
 
   def create
-    tags = params[:tags].split(", ")
-    tag_models = tags.map { |tag| Tag.find_or_create_by(name: tag) }
-    @post = current_user.posts.create(title: params[:title],
-                                      content: params[:content],
-                                      written_at: DateTime.now,
-                                      tags: tag_models)
+    params = post_params.merge({written_at: DateTime.now})
+    @post = current_user.posts.create(params)
     redirect_to posts_path
     # redirect_to post_path(@post)
   end
 
   def edit
     @post = Post.find(params[:id])
-    @tags = @post.tags.map(&:name).join(", ")
-    # @tags = @post.tags.map { |x| x.name }.join(", ")
-    @action = post_path(@post)
-    @http_verb = :patch
     render :edit
   end
 
   def update
     @post = Post.find(params[:id])
     if @post.user == current_user
-      tags = params[:tags].split(", ")
-      tag_models = tags.map { |tag| Tag.find_or_create_by(name: tag) }
-      @post.update(title: params[:title],
-                   content: params[:content],
-                   tags: tag_models)
+      @post.update(post_params)
     else
       flash[:alert] = 'Only the author of a post may change the post.'
     end
@@ -61,5 +47,14 @@ class PostsController < ApplicationController
       flash[:alert] = 'Only the author of a post may delete a post.'
     end
     redirect_to posts_path
+  end
+
+  private
+  def post_params
+    params.require(:post).permit(:title, :tag_names, :content)
+  end
+
+  def invalid_param?
+    params[:post].count > post_params.count
   end
 end
